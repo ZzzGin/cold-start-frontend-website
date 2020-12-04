@@ -172,10 +172,10 @@ const HistoryChart = () => {
     React.useEffect(() => {
         const fetchDataForHistory = async () => {
             const nowRoundToDate = Math.floor(Date.now()/86400/1000)*86400;
-            const sixteenDayBeforeRoundToDate = nowRoundToDate - 60*86400;
+            const sixtyDayBeforeRoundToDate = nowRoundToDate - 60*86400;
             const result = await API.graphql(graphqlOperation(listColdStartSummariesAfterTimestamp, { 
                 PK: 'SUMMARY|' + selectedSingleProvider + '|' + selectedSingleRuntime + '|' + selectedSingleMemSize,
-                SK_from: sixteenDayBeforeRoundToDate,
+                SK_from: sixtyDayBeforeRoundToDate,
                 SK_to: nowRoundToDate
             }));
             
