@@ -6,7 +6,7 @@ const InfoPage = () => {
     const mdText = `
 # FaaS Cold Start Benchmark
 ## Description
-Welcome to this helloworld-styled website. This website provides tools to benchmark FaaS solutions from mainstream providers, e.g., AWS, Google, Azure and more. Here is a list of records now in the database. More entries are planned and will come in the future. For now questions or suggestions, please contact zzzgin@hotmail.com.
+Welcome to this helloworld-styled website. This website provides tools to benchmark FaaS solutions from mainstream providers, e.g., AWS, Google, Azure and more. Here is a list of records now in the database. More entries are planned and will come in the future. More details can be found in [backend CDK Github repo](https://github.com/ZzzGin/cold-start-severless-backend-cdk). For any questions or suggestions, please contact zzzgin@hotmail.com.
 
 | Providers | Runtime | Memory Size |
 | :- | :- | :- |
