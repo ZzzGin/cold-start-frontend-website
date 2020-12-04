@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-coldstartfrontendweb-dev-224339-authRole",
+      "UnauthRoleArn": "arn:aws:iam::583353371784:role/amplify-coldstartfrontendweb-dev-224339-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::583353371784:role/amplify-coldstartfrontendweb-dev-224339-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-coldstartfrontendweb-dev-224339-deployment",
+      "UnauthRoleName": "amplify-coldstartfrontendweb-dev-224339-unauthRole",
+      "StackName": "amplify-coldstartfrontendweb-dev-224339",
+      "StackId": "arn:aws:cloudformation:us-west-2:583353371784:stack/amplify-coldstartfrontendweb-dev-224339/bb0799a0-3469-11eb-9d8e-0a455b2fab3f",
+      "AmplifyAppId": "d1w61hiv9ceoxz"
+    }
+  }
+}

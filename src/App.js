@@ -1,20 +1,21 @@
 import { 
   Container, Typography, Switch, FormControlLabel, Input, 
   FormControl, InputLabel, Select, MenuItem, Checkbox, ListItemText,
-  Box, Tab, Tabs, Paper
+  Box, Tab, Tabs 
 } from '@material-ui/core';
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import theme from './themes/darkTheme'
 import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
-import TimeChart from './TimeChart/TimeChart'
+import TimeChart from './Chart/TimeChart'
 import { API, graphqlOperation } from 'aws-amplify'
 import { listColdStartSummariesAfterTimestamp } from './graphql/queries'
 import InfoIcon from '@material-ui/icons/Info';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import InfoPage from './Info';
+import HistoryChart from './Chart/HistoryChart';
 
 import PropTypes from 'prop-types';
 
@@ -75,7 +76,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component={'span'} >{children}</Typography>
         </Box>
       )}
     </div>
@@ -100,18 +101,18 @@ var timeRangeCache = {};
 function App() {
 
   const classes = useStyles();
-  const [value, setValue] = React.useState('one');
+  const [tabValue, setTabValue] = React.useState('one');
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
   };
 
   const [selectedProviders, setSelectedProviders] = React.useState([]);
   const [selectedRuntimes, setSelectedRuntimes] = React.useState([]);
   const [selectedMemSizes, setSelectedMemSizes] = React.useState([]);
-  const [selectHistory, setSelectHistory] = React.useState(false);
   const [selectWarm, setSelectWarm] = React.useState(false);
   const [partitionKeys, setPartitionKeys] = React.useState([]);
+
 
   const handleSelectedProviderChange = (event) => {
     setSelectedProviders(event.target.value);
@@ -122,12 +123,10 @@ function App() {
   const handleSelectedMemSizesChange = (event) => {
     setSelectedMemSizes(event.target.value);
   };
-  const handleSwitchChange = (event) => {
-    setSelectHistory(event.target.checked);
-  };
   const handleWarmSwitchChange = (event) => {
     setSelectWarm(event.target.checked);
   }
+
 
   const processItemToTimeRange = (item) => {
 
@@ -198,7 +197,7 @@ function App() {
 
   React.useEffect(() => {
   
-    const fetchData = async partitionKeyList => {
+    const fetchDataForBenchmark = async partitionKeyList => {
       for (var pk of partitionKeyList){
         if (!(pk in timeRangeCache)) {
           const nowRoundToDate = Math.floor(Date.now()/86400/1000)*86400;
@@ -230,18 +229,16 @@ function App() {
         })
       })
     })
-    fetchData(partitionKeyList);
-  }, [selectedProviders, selectedRuntimes, selectedMemSizes])
+    fetchDataForBenchmark(partitionKeyList);
+
+  }, [selectedProviders, selectedRuntimes, selectedMemSizes, tabValue])
 
   return (
     <div>
       <ThemeProvider theme={theme}>
         <AppBar position="fixed">
           <Toolbar>
-          <Typography variant="h5">
-            Serverless Function Cold Start Benchmark
-          </Typography>
-          <Tabs value={value} onChange={handleChange} aria-label="wrapped label tabs example">
+          <Tabs value={tabValue} onChange={handleTabChange} aria-label="wrapped label tabs example">
             <Tab value="one" label="Info" icon={<InfoIcon />} {...a11yProps('one')}/>
             <Tab value="two" label="Benchmark" icon={<BarChartIcon />} {...a11yProps('two')} />
             <Tab value="three" label="History" icon={<TimelineIcon />} {...a11yProps('three')} />
@@ -251,14 +248,12 @@ function App() {
 
         <Toolbar />
 
-        <TabPanel value={value} index="one">
+        <TabPanel value={tabValue} index="one">
           <Container maxWidth="md">
-            <Paper>
-              <InfoPage />
-            </Paper>
+             <InfoPage />
           </Container>
         </TabPanel> 
-        <TabPanel value={value} index="two">
+        <TabPanel value={tabValue} index="two">
           {/* Filters */}
           <Container maxWidth="md">
             <FormControl className={classes.formControl}>
@@ -331,13 +326,6 @@ function App() {
             />
           </Container>
 
-          <Container maxWidth="md">
-            <FormControlLabel
-              control={<Switch checked={selectHistory} onChange={handleSwitchChange} />}
-              label="History"
-            />
-          </Container>
-
           {
             partitionKeys.map( pk => (
               <Container key={pk}>
@@ -346,11 +334,9 @@ function App() {
             ))
           }
         </TabPanel>
-        <TabPanel value={value} index="three">
-          <Container maxWidth="md">
-            <Paper>
-              🚧 Under Construction🚧 
-            </Paper>
+        <TabPanel value={tabValue} index="three">
+          <Container maxWidth='md'>
+            <HistoryChart />
           </Container>
         </TabPanel>
       </ThemeProvider>

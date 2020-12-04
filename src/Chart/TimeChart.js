@@ -87,10 +87,10 @@ const TimeChart = ({dataSet, pk, warm}) => {
       }
 
     return (
-        <>
-        <Typography variant="h6">
-            {pk}
-        </Typography>
+        <div>
+            <Typography variant="h6">
+                {pk}
+            </Typography>
         {
             !warm ? (
                 <div >
@@ -114,7 +114,7 @@ const TimeChart = ({dataSet, pk, warm}) => {
                 </div>
             )
         }
-        </>
+        </div>
     );
 };
 
